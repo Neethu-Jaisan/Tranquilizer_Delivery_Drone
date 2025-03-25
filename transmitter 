@@ -1,0 +1,16 @@
+#include <SoftwareSerial.h>
+
+SoftwareSerial HC12(2, 3);  // HC-12 TX to D2, RX to D3
+#define TRIGGER_BUTTON 4  // Button to send command
+
+void setup() {
+  pinMode(TRIGGER_BUTTON, INPUT_PULLUP);
+  HC12.begin(9600);
+}
+
+void loop() {
+  if (digitalRead(TRIGGER_BUTTON) == LOW) {
+    HC12.println("FIRE");  // Send command to the receiver
+    delay(1000);
+  }
+}
