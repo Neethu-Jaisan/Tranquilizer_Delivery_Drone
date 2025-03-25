@@ -1,16 +1,18 @@
 #include <SoftwareSerial.h>
 
-SoftwareSerial HC12(2, 3);  // HC-12 TX to D2, RX to D3
-#define TRIGGER_BUTTON 4  // Button to send command
+SoftwareSerial HC12(16, 17);  // HC-12 TX to ESP32 RX, RX to ESP32 TX
+#define BUTTON_PIN 4  // Push button pin
 
 void setup() {
-  pinMode(TRIGGER_BUTTON, INPUT_PULLUP);
-  HC12.begin(9600);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);  // Internal pull-up resistor
+  HC12.begin(9600);  // Set baud rate
+  Serial.begin(115200);
 }
 
 void loop() {
-  if (digitalRead(TRIGGER_BUTTON) == LOW) {
-    HC12.println("FIRE");  // Send command to the receiver
-    delay(1000);
+  if (digitalRead(BUTTON_PIN) == LOW) {  // Button pressed
+    HC12.println("FIRE");  // Send command
+    Serial.println("Command Sent: FIRE");
+    delay(2000);  // Avoid multiple triggers
   }
 }
